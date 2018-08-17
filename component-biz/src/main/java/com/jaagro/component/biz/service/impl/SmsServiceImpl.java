@@ -10,9 +10,11 @@ import com.aliyuncs.profile.IClientProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaagro.component.api.service.SmsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import utils.VerificationPhone;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -23,9 +25,22 @@ public class SmsServiceImpl implements SmsService {
 
 
     /**短信账号信息*/
-    private static String ACCESS_KEY_ID = "LTAIFSq71xbZMfJD";
-    private static String ACCESS_KEY_SECRET = "ghHnteMFpyf8aM4i9BvkeTputjqyNN";
-    private static String SIGN_NAME = "健安";
+    private static String ACCESS_KEY_ID;
+    private static String ACCESS_KEY_SECRET;
+    private static String SIGN_NAME;
+
+    @Value("${aliyun.sms.accessKeyId}")
+    public static void setAccessKeyId(String accessKeyId) {
+        ACCESS_KEY_ID = accessKeyId;
+    }
+    @Value("${aliyun.sms.accessKeySecret}")
+    public static void setAccessKeySecret(String accessKeySecret) {
+        ACCESS_KEY_SECRET = accessKeySecret;
+    }
+    @Value("${aliyun.sms.signName}")
+    public static void setSignName(String signName) {
+        SIGN_NAME = signName;
+    }
 
     /** 产品名称:云通信短信API产品,开发者无需替换*/
     private static final String PRODUCT = "Dysmsapi";

@@ -60,7 +60,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 
     /**
      * 判断短信是否存在
-     *
+     * 从redis中读取验证码
      * @param phoneNumber 手机号码
      * @return
      */
