@@ -10,11 +10,9 @@ import com.aliyuncs.profile.IClientProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaagro.component.api.service.SmsService;
+import com.jaagro.utils.VerificationPhone;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import utils.VerificationPhone;
-
-import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -30,15 +28,15 @@ public class SmsServiceImpl implements SmsService {
     private static String SIGN_NAME;
 
     @Value("${aliyun.sms.accessKeyId}")
-    public static void setAccessKeyId(String accessKeyId) {
+    public void setAccessKeyId(String accessKeyId) {
         ACCESS_KEY_ID = accessKeyId;
     }
     @Value("${aliyun.sms.accessKeySecret}")
-    public static void setAccessKeySecret(String accessKeySecret) {
+    public void setAccessKeySecret(String accessKeySecret) {
         ACCESS_KEY_SECRET = accessKeySecret;
     }
     @Value("${aliyun.sms.signName}")
-    public static void setSignName(String signName) {
+    public void setSignName(String signName) {
         SIGN_NAME = signName;
     }
 

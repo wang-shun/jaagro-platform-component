@@ -4,11 +4,11 @@ import com.aliyuncs.exceptions.ClientException;
 import com.google.common.collect.Maps;
 import com.jaagro.component.api.service.SmsService;
 import com.jaagro.component.api.service.VerificationCodeService;
+import com.jaagro.utils.ServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import utils.ServiceResult;
 
 import java.util.Map;
 import java.util.Random;
@@ -23,7 +23,12 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     /**
      * 短信校验码模板code
      */
-    private String smsTemplateCode = "SMS_141605531";
+    private static String smsTemplateCode ;
+
+    @Value("${aliyun.sms.templateCode}")
+    public void setSmsTemplateCode(String smsTemplateCode) {
+        VerificationCodeServiceImpl.smsTemplateCode = smsTemplateCode;
+    }
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -46,15 +51,21 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
             verificationCodeBuilder = stringBuilder.append(random.nextInt(9));
         }
         String verificationCode = verificationCodeBuilder.toString();
+        //先存库
+        try {
+            redisTemplate.opsForValue().set(phoneNumber, verificationCode, 10, TimeUnit.MINUTES);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ServiceResult.toResult("服务器出错，请稍后再试：redis");
+        }
         Map<String, Object> map = Maps.newLinkedHashMap();
         map.put("code", verificationCode);
         try {
             smsService.sendSms(phoneNumber, smsTemplateCode, map);
         } catch (ClientException e) {
             e.printStackTrace();
-            return ServiceResult.error("短信发送失败");
+            return ServiceResult.error("验证码发送失败");
         }
-        redisTemplate.opsForValue().set(phoneNumber, verificationCode, 10, TimeUnit.MINUTES);
         return ServiceResult.toResult("验证码发送成功");
     }
 

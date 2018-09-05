@@ -2,12 +2,12 @@ package com.jaagro.component.web.controller;
 
 import com.jaagro.component.api.dto.PostObjectPolicy;
 import com.jaagro.component.api.service.OssService;
+import com.jaagro.utils.BaseResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import utils.BaseResponse;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -46,15 +46,15 @@ public class OssController {
 
     @ApiOperation(value = "获取oss文件存储路径")
     @PostMapping("/listSignedUrl")
-    public BaseResponse listSignedUrl(@RequestParam String[] filePath){
+    public List<URL> listSignedUrl(@RequestParam String[] filePath){
         if(filePath.length == 0){
-            return BaseResponse.errorInstance("文件路径不正确");
+            throw new NullPointerException("文件路径不能为空");
         }
         List<URL> urlList = new ArrayList<>();
-        for (int i = 0; i < filePath.length; i ++) {
+         for (int i = 0; i < filePath.length; i ++) {
             urlList.add(ossService.getSignedUrl(filePath[i]));
         }
-        return BaseResponse.successInstance(urlList);
+        return urlList;
     }
 
     @ApiOperation(value = "获取Oss STS token")
