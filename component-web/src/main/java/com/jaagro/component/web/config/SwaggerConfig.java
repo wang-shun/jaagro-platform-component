@@ -29,6 +29,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build().securitySchemes(Lists.newArrayList(apiKey()));
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("用户 API")

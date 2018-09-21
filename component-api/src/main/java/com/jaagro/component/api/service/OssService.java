@@ -12,7 +12,8 @@ public interface OssService {
 
     /**
      * 获取policy签名信息
-     * @param dir 存储在bucket的目录
+     *
+     * @param dir            存储在bucket的目录
      * @param expiredSeconds 过期时间
      * @return
      */
@@ -20,6 +21,7 @@ public interface OssService {
 
     /**
      * 获取授权url
+     *
      * @param objectName
      * @return
      */
@@ -27,6 +29,7 @@ public interface OssService {
 
     /**
      * 获取sts
+     *
      * @return
      */
     Map<String, Object> generateStsToken();

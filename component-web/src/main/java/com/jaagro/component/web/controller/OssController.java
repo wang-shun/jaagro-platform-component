@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sun.applet.resources.MsgAppletViewer;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -28,7 +29,7 @@ public class OssController {
 
     @ApiOperation(value = "批量获取oss上传签名")
     @PostMapping("/listOssPolicy")
-    public BaseResponse listOssPolicy(@RequestParam String packageName, @RequestParam int size){
+    public BaseResponse listOssPolicy(@RequestParam String packageName, @RequestParam int size) {
         if (size == 0) {
             return BaseResponse.errorInstance("size参数不能小于0");
         }
@@ -38,7 +39,7 @@ public class OssController {
         String fileDir = df.format(new Date());
         List<PostObjectPolicy> policies = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            PostObjectPolicy policy = ossService.getPostObjectPolicy(packageName + "/" + fileDir,300);
+            PostObjectPolicy policy = ossService.getPostObjectPolicy(packageName + "/" + fileDir, 300);
             policies.add(policy);
         }
         return BaseResponse.successInstance(policies);
@@ -46,12 +47,12 @@ public class OssController {
 
     @ApiOperation(value = "获取oss文件存储路径")
     @PostMapping("/listSignedUrl")
-    public List<URL> listSignedUrl(@RequestParam String[] filePath){
-        if(filePath.length == 0){
+    public List<URL> listSignedUrl(@RequestParam String[] filePath) {
+        if (filePath.length == 0) {
             throw new NullPointerException("文件路径不能为空");
         }
         List<URL> urlList = new ArrayList<>();
-         for (int i = 0; i < filePath.length; i ++) {
+        for (int i = 0; i < filePath.length; i++) {
             urlList.add(ossService.getSignedUrl(filePath[i]));
         }
         return urlList;

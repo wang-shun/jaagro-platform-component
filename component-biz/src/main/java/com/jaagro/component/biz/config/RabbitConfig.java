@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
-
     private static final String QUEUE = "comp-queue";
 
     @Bean
-    public Queue queue(){
+    public Queue queue() {
         return new Queue(QUEUE);
     }
 }

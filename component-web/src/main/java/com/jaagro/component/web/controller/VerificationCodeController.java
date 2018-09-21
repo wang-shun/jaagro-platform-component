@@ -21,16 +21,16 @@ public class VerificationCodeController {
 
     @PostMapping("/sendMessage")
     public BaseResponse sendMessage(@RequestParam String phoneNumber) {
-        if(VerificationPhone.isMobile(phoneNumber)){
+        if (VerificationPhone.isMobile(phoneNumber)) {
             return BaseResponse.service(verificationCodeService.sendMessage(phoneNumber));
         }
-        return BaseResponse.service(ServiceResult.error(ResponseStatusCode.QUERY_DATA_ERROR.getCode(),"手机号码不正确，请重新输入"));
+        return BaseResponse.service(ServiceResult.error(ResponseStatusCode.QUERY_DATA_ERROR.getCode(), "手机号码不正确，请重新输入"));
     }
 
     @PostMapping("/existMessage")
     public boolean existMessage(@RequestParam String phoneNumber,
-                                @RequestParam String verificationCode){
-        if(VerificationPhone.isMobile(phoneNumber)){
+                                @RequestParam String verificationCode) {
+        if (VerificationPhone.isMobile(phoneNumber)) {
             return verificationCodeService.existMessage(phoneNumber, verificationCode);
         }
         return false;
