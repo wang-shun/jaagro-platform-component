@@ -14,7 +14,7 @@ public class Producer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send(){
+    public void send() {
         String message = "你好，消息";
         rabbitTemplate.convertAndSend(QUEUE, message);
         System.out.println(message + ": 我是消息发送者");

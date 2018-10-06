@@ -15,8 +15,7 @@ public class TestController {
     private Producer producer;
 
     @GetMapping("/test1")
-    public void test1(){
+    public void test1() {
         producer.send();
     }
-
 }

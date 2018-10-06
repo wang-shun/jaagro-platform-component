@@ -11,8 +11,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaagro.component.api.service.SmsService;
 import com.jaagro.utils.VerificationPhone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.util.Map;
 
 /**
@@ -21,8 +24,10 @@ import java.util.Map;
 @Service
 public class SmsServiceImpl implements SmsService {
 
-
-    /**短信账号信息*/
+    private static final Logger log = LoggerFactory.getLogger(SmsServiceImpl.class);
+    /**
+     * 短信账号信息
+     */
     private static String ACCESS_KEY_ID;
     private static String ACCESS_KEY_SECRET;
     private static String SIGN_NAME;
@@ -31,34 +36,40 @@ public class SmsServiceImpl implements SmsService {
     public void setAccessKeyId(String accessKeyId) {
         ACCESS_KEY_ID = accessKeyId;
     }
+
     @Value("${aliyun.sms.accessKeySecret}")
     public void setAccessKeySecret(String accessKeySecret) {
         ACCESS_KEY_SECRET = accessKeySecret;
     }
+
     @Value("${aliyun.sms.signName}")
     public void setSignName(String signName) {
         SIGN_NAME = signName;
     }
 
-    /** 产品名称:云通信短信API产品,开发者无需替换*/
-    private static final String PRODUCT = "Dysmsapi";
-    /** 产品域名,开发者无需替换 */
+    /**
+     * 产品域名,开发者无需替换
+     */
     private static final String DOMAIN = "dysmsapi.aliyuncs.com";
+    /**
+     * 产品名称:云通信短信API产品,开发者无需替换
+     */
+    private static final String PRODUCT = "Dysmsapi";
 
     private static ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * 阿里云短信发送接口
      *
-     * @param phoneNumber 手机号码
+     * @param phoneNumber  手机号码
      * @param templateCode 模板编号，在阿里云短信控制台
-     * @param templateMap 短信模板内的变量用一个map传过来
+     * @param templateMap  短信模板内的变量用一个map传过来
      * @return
      * @throws ClientException
      */
     @Override
     public SendSmsResponse sendSms(String phoneNumber, String templateCode, Map<String, Object> templateMap) throws ClientException {
-        if(!VerificationPhone.isMobile(phoneNumber)){
+        if (!VerificationPhone.isMobile(phoneNumber)) {
             throw new RuntimeException("请输入有效的11位中国大陆手机号！");
         }
         //将短信模板变量map转换成json
@@ -67,6 +78,8 @@ public class SmsServiceImpl implements SmsService {
             templateParams = MAPPER.writeValueAsString(templateMap);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            log.error("模板变量转换失败：" + e.getMessage());
+
         }
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");

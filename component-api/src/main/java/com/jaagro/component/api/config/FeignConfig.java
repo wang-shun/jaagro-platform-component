@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * 解决feign调用无法携带请求头的问题
+ *
  * @author tony
  */
 @Component
