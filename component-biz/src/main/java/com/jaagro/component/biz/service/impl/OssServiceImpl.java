@@ -126,7 +126,7 @@ public class OssServiceImpl implements OssService {
                 "        \"oss:ListObjects\"\n" +
                 "      ],\n" +
                 "      \"Effect\": \"Allow\",\n" +
-                "      \"Resource\": [\"acs:oss:*:*:jaagro/dev/*\", \"acs:oss:*:*:jaagro/test/*\", \"acs:oss:*:*:jaagro/pro/*\"]\n" +
+                "      \"Resource\": [\"acs:oss:*:*:jaagro/dev/*\", \"acs:oss:*:*:jaagro/test/*\", \"acs:oss:*:*:jaagro/prod/*\"]\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"Version\": \"1\"\n" +
