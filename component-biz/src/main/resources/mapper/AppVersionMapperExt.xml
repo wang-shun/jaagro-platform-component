@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jaagro.component.biz.mapper.AppVersionMapperExt">
+    <resultMap id="BaseResultMap" type="com.jaagro.component.biz.entity.AppVersion">
+        <id column="id" property="id"/>
+        <result column="version_code" property="versionCode"/>
+        <result column="version_name" property="versionName"/>
+        <result column="app_package" property="appPackage"/>
+        <result column="force_update" property="forceUpdate"/>
+        <result column="notes" property="notes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, version_code, version_name, app_package,force_update,notes
+  </sql>
+    <select id="getLatestVersion" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from app_version
+        where 1=1 order by id desc limit 1
+    </select>
+    <insert id="insertVersion" parameterType="com.jaagro.component.biz.entity.AppVersion">
+    insert into app_version (id, version_code, version_name,
+      app_package,force_update,notes)
+    values (#{id}, #{versionCode}, #{versionName},
+      #{appPackage},#{forceUpdate},#{notes})
+  </insert>
+</mapper>
