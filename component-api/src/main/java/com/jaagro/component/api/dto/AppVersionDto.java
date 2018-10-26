@@ -34,4 +34,9 @@ public class AppVersionDto implements Serializable {
      */
     private String notes;
 
+    /**
+     * 资源下载地址
+     */
+    private String resourceUrl;
+
 }
