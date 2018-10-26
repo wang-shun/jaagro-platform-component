@@ -34,4 +34,9 @@ public class AppVersion implements Serializable {
      */
     private String notes;
 
+    /**
+     * 资源下载地址
+     */
+    private String resourceUrl;
+
 }

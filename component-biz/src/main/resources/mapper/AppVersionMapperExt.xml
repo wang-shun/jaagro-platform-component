@@ -8,6 +8,8 @@
         <result column="app_package" property="appPackage"/>
         <result column="force_update" property="forceUpdate"/>
         <result column="notes" property="notes"/>
+        <result column="resource_url" property="resourceUrl"/>
+
     </resultMap>
     <sql id="Base_Column_List">
     id, version_code, version_name, app_package,force_update,notes
@@ -20,8 +22,8 @@
     </select>
     <insert id="insertVersion" parameterType="com.jaagro.component.biz.entity.AppVersion">
     insert into app_version (id, version_code, version_name,
-      app_package,force_update,notes)
+      app_package,force_update,notes, resource_url)
     values (#{id}, #{versionCode}, #{versionName},
-      #{appPackage},#{forceUpdate},#{notes})
+      #{appPackage},#{forceUpdate},#{notes}, #{resourceUrl} )
   </insert>
 </mapper>
