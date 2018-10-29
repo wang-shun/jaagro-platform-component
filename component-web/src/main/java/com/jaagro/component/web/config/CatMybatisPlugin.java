@@ -27,16 +27,17 @@ import java.util.regex.Matcher;
 
 
 /**
- *  1.Cat-Mybatis plugin:  Rewrite on the version of Steven;
- *  2.Support DruidDataSource,PooledDataSource(mybatis Self-contained data source);
- * @author zhanzehui(west_20@163.com)
+ * 1.Cat-Mybatis plugin:  Rewrite on the version of Steven;
+ * 2.Support DruidDataSource,PooledDataSource(mybatis Self-contained data source);
+ *
+ * @author zhanzehui(west_20 @ 163.com)
  */
 
 @Intercepts({
         @Signature(method = "query", type = Executor.class, args = {
                 MappedStatement.class, Object.class, RowBounds.class,
-                ResultHandler.class }),
-        @Signature(method = "update", type = Executor.class, args = { MappedStatement.class, Object.class })
+                ResultHandler.class}),
+        @Signature(method = "update", type = Executor.class, args = {MappedStatement.class, Object.class})
 })
 public class CatMybatisPlugin implements Interceptor {
 
@@ -46,21 +47,21 @@ public class CatMybatisPlugin implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         MappedStatement mappedStatement = this.getStatement(invocation);
-        String          methodName      = this.getMethodName(mappedStatement);
+        String methodName = this.getMethodName(mappedStatement);
         Transaction t = Cat.newTransaction("SQL", methodName);
 
-        String sql = this.getSql(invocation,mappedStatement);
+        String sql = this.getSql(invocation, mappedStatement);
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Cat.logEvent("SQL.Method", sqlCommandType.name().toLowerCase(), Message.SUCCESS, sql);
 
         String url = this.getSQLDatabaseUrlByStatement(mappedStatement);
         Cat.logEvent("SQL.Database", url);
 
-        return doFinish(invocation,t);
+        return doFinish(invocation, t);
     }
 
     private MappedStatement getStatement(Invocation invocation) {
-        return (MappedStatement)invocation.getArgs()[0];
+        return (MappedStatement) invocation.getArgs()[0];
     }
 
     private String getMethodName(MappedStatement mappedStatement) {
@@ -72,7 +73,7 @@ public class CatMybatisPlugin implements Interceptor {
 
     private String getSql(Invocation invocation, MappedStatement mappedStatement) {
         Object parameter = null;
-        if(invocation.getArgs().length > 1){
+        if (invocation.getArgs().length > 1) {
             parameter = invocation.getArgs()[1];
         }
 
@@ -83,7 +84,7 @@ public class CatMybatisPlugin implements Interceptor {
         return sql;
     }
 
-    private Object doFinish(Invocation invocation,Transaction t) throws InvocationTargetException, IllegalAccessException {
+    private Object doFinish(Invocation invocation, Transaction t) throws InvocationTargetException, IllegalAccessException {
         Object returnObj = null;
         try {
             returnObj = invocation.proceed();
@@ -110,25 +111,25 @@ public class CatMybatisPlugin implements Interceptor {
             url = switchDataSource(dataSource);
 
             return url;
-        } catch (NoSuchFieldException|IllegalAccessException|NullPointerException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | NullPointerException e) {
             Cat.logError(e);
         }
 
-        Cat.logError(new Exception("UnSupport type of DataSource : "+dataSource.getClass().toString()));
+        Cat.logError(new Exception("UnSupport type of DataSource : " + dataSource.getClass().toString()));
         return MYSQL_DEFAULT_URL;
     }
 
     private String switchDataSource(DataSource dataSource) throws NoSuchFieldException, IllegalAccessException {
         String url = null;
 
-        if(dataSource instanceof DruidDataSource) {
+        if (dataSource instanceof DruidDataSource) {
             url = ((DruidDataSource) dataSource).getUrl();
-        }else if(dataSource instanceof PooledDataSource) {
+        } else if (dataSource instanceof PooledDataSource) {
             Field dataSource1 = dataSource.getClass().getDeclaredField("dataSource");
             dataSource1.setAccessible(true);
-            UnpooledDataSource dataSource2 = (UnpooledDataSource)dataSource1.get(dataSource);
-            url =dataSource2.getUrl();
-        }else {
+            UnpooledDataSource dataSource2 = (UnpooledDataSource) dataSource1.get(dataSource);
+            url = dataSource2.getUrl();
+        } else {
             //other dataSource expand
         }
 
