@@ -7,8 +7,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tony
@@ -28,11 +34,15 @@ public class CatFilterConfigure {
     }
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean() {
+    public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         Interceptor[] plugins = {new CatMybatisPlugin()};
         sqlSessionFactoryBean.setPlugins(plugins);
-        sqlSessionFactoryBean.setDataSource(DataSourceBuilder.create().build());
+        sqlSessionFactoryBean.setDataSource(dataSource);
+
+//        //DataSourceBuilder.create().build()
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/mapper/*.xml"));
         return sqlSessionFactoryBean;
     }
 }
