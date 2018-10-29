@@ -34,11 +34,11 @@ public class CatFilterConfigure {
     }
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean() throws IOException {
+    public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         Interceptor[] plugins = {new CatMybatisPlugin()};
         sqlSessionFactoryBean.setPlugins(plugins);
-        sqlSessionFactoryBean.setDataSource(DataSourceBuilder.create().build());
+        sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/mapper/*.xml"));
         return sqlSessionFactoryBean;
