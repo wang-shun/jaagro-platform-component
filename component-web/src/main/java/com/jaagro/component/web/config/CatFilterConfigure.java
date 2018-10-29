@@ -45,9 +45,4 @@ public class CatFilterConfigure {
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/mapper/*.xml"));
         return sqlSessionFactoryBean;
     }
-
-    @Bean
-    public CatMybatisPlugin catMybatisPlugin() {
-        return new CatMybatisPlugin();
-    }
 }
