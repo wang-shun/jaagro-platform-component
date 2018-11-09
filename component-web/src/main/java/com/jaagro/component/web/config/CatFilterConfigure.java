@@ -3,19 +3,13 @@ package com.jaagro.component.web.config;
 import com.dianping.cat.servlet.CatFilter;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author tony
  */
@@ -32,7 +26,6 @@ public class CatFilterConfigure {
         registration.setOrder(1);
         return registration;
     }
-
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
@@ -44,10 +37,5 @@ public class CatFilterConfigure {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/mapper/*.xml"));
         return sqlSessionFactoryBean;
-    }
-
-    @Bean
-    public CatMybatisPlugin catMybatisPlugin() {
-        return new CatMybatisPlugin();
     }
 }

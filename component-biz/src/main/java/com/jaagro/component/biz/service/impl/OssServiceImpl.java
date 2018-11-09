@@ -37,7 +37,6 @@ public class OssServiceImpl implements OssService {
     private String roleArn;
     @Value("${aliyun.oss.tokenExpireTime}")
     private String tokenExpireTime;
-
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
     @Value("${aliyun.oss.accessKeyId}")
