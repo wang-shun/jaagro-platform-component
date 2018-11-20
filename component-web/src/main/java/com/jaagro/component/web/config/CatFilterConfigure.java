@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author tony
  */
-@Configuration
+//@Configuration
 public class CatFilterConfigure {
 
     @Bean
