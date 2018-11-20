@@ -1,4 +1,4 @@
-package com.jaagro.component.web.config;
+package com.jaagro.component.web.config.cat;
 
 import com.dianping.cat.servlet.CatFilter;
 import org.apache.ibatis.plugin.Interceptor;
